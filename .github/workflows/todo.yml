@@ -1,4 +1,4 @@
-name: CI/CD for react Todo 
+name: CI/CD for React Todo
 
 on:
   push:
@@ -13,42 +13,35 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Install Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
 
-      - name: Install Dependencies
+      - name: Install Dependencies and Build Project
         run: |
-          cd todo
+          cd todo_frontend
           npm install
-
-      - name: Build Project
-        run: |
-          cd todo
           npm run build
 
-      - name: Upload artifact to enable deployment
+      - name: Upload Production Files
         uses: actions/upload-artifact@v3
         with:
-          name: poduction file
-          path: ./todo/build
+          name: production-files
+          path: ./todo_frontend/build
 
   # Deploy Job
   deploy:
-   
     needs: build
-    
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifact
+      - name: Download Production Files
         uses: actions/download-artifact@v3
         with:
-          name: poduction file
-          path: ./todo/build
+          name: production-files
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{secrets.GITHUB_TOKEN }} #this is the key of the access token
-          publish_dir: ./todo/build
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./todo_frontend/build
