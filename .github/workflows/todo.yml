@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: production-files
-          path: ./todo_frontend/build
+          path: ./todo/build
 
   # Deploy Job
   deploy:
@@ -43,5 +43,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./todo_frontend/build
+          github_token: ${{ secrets.DEVOPS_KEY }}
+          publish_dir: ./todo/build
